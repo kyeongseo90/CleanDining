@@ -7,18 +7,23 @@ import SearchPlace from './SearchPlace.js';
 import ShowParty from './ShowParty.js';
 import FindPeopleWith from './FindPeopleWith.js';
 import WatchDetailInfo from './WatchDetailInfo.js';
+import Login from './Login';
+import Signup from './Signup';
+import Main from './Main';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/"></Route>
+        <Route path="/" element={<Login/>} />
         <Route path="/keywordSearch" element={<SearchPlace />}></Route>
         <Route path="/parentLocation" element={<FindGps />}></Route>
         <Route path="/findPeopleWith/:id/:grade" element={<FindPeopleWith />}></Route>
         <Route path="/watchDetailInfo/:id" element={<WatchDetailInfo />}></Route>
         <Route path="/createNewParty/:id" element={<CreateNewParty/>}></Route>
         <Route path="/showParty/:id" element={<ShowParty />}></Route>
+        <Route path="/Signup" element={<Signup/>} />
+        <Route path="/Main" element={<Main/>} />
       </Routes>
     </BrowserRouter>
   );

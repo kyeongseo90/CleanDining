@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-//import { post } from '../server/Router/test';
-//import GetApiData from './GetApiData';
-import MapContainer from './MapContainer';
-import './css/MapContainer.css';
+import MapContainer from './MapContainer.js';
+import Loading from './Loading.js';
+import './css/SearchPlace.css';
 
 function DataMap(){
 
@@ -11,9 +10,8 @@ function DataMap(){
 const SearchPlace = () => {
     const [inputText, setText] = useState("");
     const [place, setPlace] = useState("");
-
-    //const [apiData, setApiData] = useState([]);
     const [dataMap, setDataMap] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const onChange = (event) => {
         setText(event.target.value);
@@ -25,32 +23,40 @@ const SearchPlace = () => {
         setText("");
 
         var aplace = inputText.replace(/ /gi, "_");
-        var uri = encodeURI(`http://openapi.foodsafetykorea.go.kr/api/6feee3b238ed4706a230/C004/json/1/500/ADDR=${aplace}/`);
-        console.log(uri);
+        var uri = encodeURI(`http://openapi.foodsafetykorea.go.kr/api/ef03c3ddff5742b7bf91/C004/json/1/500/ADDR=${aplace}`);
 
-        fetch(uri)
-        .then((res)=>res.json())
-        .then(data=>{
-            setDataMap(data.C004.row.map((item)=>
+        callApi(uri);
+    };
+
+    const callApi = async (uri) => {
+        setLoading(true);
+        try {
+                
+            const response = await fetch(uri);
+            const result = await response.json();
+
+            setDataMap(result.C004.row.map((item) =>
                 <DataMap key={item.WRKR_REG_NO} place={item.BSSH_NM} value={item.HG_ASGN_LV} address={item.ADDR} />
             ));
-        })
-        /*
-        .then(data=>setApiData(data));
 
-        console.log(apiData);
-        setDataMap(apiData.C004.row.map((item) =>
-            <DataMap key={item.WRKR_REG_NO} place={item.BSSH_NM} value={item.HG_ASGN_LV} address={item.ADDR}/>
-        ));*/
-    };
-    
+            if(dataMap === null || dataMap === undefined) throw new Error("retry");
+
+            setLoading(false);
+        } catch (error) {
+            window.alert(error);
+            setLoading(false);
+        }
+    }
+
     return(
         <div>
-            <form class="inputForm" onSubmit={handleSubmit}>
-                <input class="input" placeholder="Search Place..." onChange={onChange} value={inputText} />
-                <button type="submit">검색</button>
-            </form>
-            <MapContainer apiData={dataMap} searchPlace={place} />
+            <div class="search-bar">
+                <form class="inputForm" onSubmit={handleSubmit}>
+                    <input class="input" placeholder="검색해보세요... [Ex) 경기도 시흥시 승지로]" onChange={onChange} value={inputText} />
+                    <button class="search" type="submit">Search</button>
+                </form>
+            </div>
+            {loading ? <Loading /> : <MapContainer apiData={dataMap} searchPlace={place} />}
         </div>
     );
 

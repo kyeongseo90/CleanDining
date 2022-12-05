@@ -6,18 +6,11 @@ const {kakao} = window;
 function MapContainer({apiData, searchPlace}) {
 
     const [Places,setPlaces] = useState([]);
-    const save = false;
-    //const [save, setSave] = useState(true);
+    const [match, setMatch] = useState(true);
 
     const openPlace = [];
-    /*setTimeout(() => {
-        const box = document.getElementById('body');
-        box.style.visibility='visible';
-    }, 1000);*/
     
     useEffect(()=>{
-
-        console.log(apiData);
 
         // 지도 표시
         const container = document.getElementById('Map');
@@ -36,19 +29,26 @@ function MapContainer({apiData, searchPlace}) {
         map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
         var asearchPlace = searchPlace + " 맛집";
-        
-        var searchOption = {
-            page:45
+
+        var searchOption1 = {
+            page: 2
         };
 
-        ps.keywordSearch(asearchPlace, placesSearchCB, searchOption);
+        var searchOption2 = {
+            page: 3
+        }
+
+        ps.keywordSearch(asearchPlace, placesSearchCB);
+        ps.keywordSearch(asearchPlace, placesSearchCB, searchOption1);
+        ps.keywordSearch(asearchPlace, placesSearchCB, searchOption2);
 
         function placesSearchCB(data, status, pagination){
             if(status === kakao.maps.services.Status.OK){
                 let bounds = new kakao.maps.LatLngBounds();
 
+                //console.log(data);
+
                 for(let i=0; i<data.length; i++){
-                    console.log(data[i].place_name);
                     for(var j=0; j<apiData.length; j++){
 
                         // openapi data에서 도로명 주소 가져와서 자르기
@@ -62,33 +62,40 @@ function MapContainer({apiData, searchPlace}) {
                         var data_tmp = data[i].road_address_name; 
                         var data_tmp1 = data_tmp.indexOf(' ');
                         var data_tmp_after = data_tmp.slice(data_tmp1+1, );
-
-                        //console.log(tmp_addr_after); // open api data
-                        //console.log(data[i].place_name);
-                        //console.log(data_tmp_after); // kakao map api data
                             
                         if(tmp_addr_after === data_tmp_after){
-                            //console.log(apiData[j].props.address);
-                            //console.log(data[i].address_name);
 
-                            
-                            console.log("success"); 
+                            // kakao api place name
+                            var temp = data[i].place_name.indexOf(' ');
+                            var temp1 = data[i].place_name.slice(0, temp);
 
-                            displayMarker(data[i], apiData[j].props.value);
-                            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x)); // 위도, 경도 재설정
+                            // openapi place name
+                            var tempa = apiData[j].props.place;
 
-                            openPlace.push(data[i]);
+                            var count = 0;
+
+                            for(var k=0;k<temp1.length;k++){
+                                if(temp1[k]===tempa[k]) count = count+1;
+                            }
+
+                            if((count/temp1.length) > 0.5){
+                                displayMarker(data[i], apiData[j].props.value);
+                                bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x)); // 위도, 경도 재설정
+                                openPlace.push(data[i]);
+                                setMatch(false);
+                                //console.log(match);
+                            }
                         }
                     }
-                    //displayMarker(data[i]);
-                    //bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-                    //console.log(save);
+                    //console.log(match);
+                    if(match) bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
                 }
 
-                map.setBounds(bounds);
+                let result = [...new Set(openPlace)];
 
+                map.setBounds(bounds);
                 //displayPagination(pagination);
-                setPlaces(openPlace);
+                setPlaces(result);
 
             } else if(status === kakao.maps.services.status.ERROR){
 
@@ -101,37 +108,6 @@ function MapContainer({apiData, searchPlace}) {
                 return;
 
             }
-        }
-
-        // 검색 리스트 밑 페이지 번호 생성
-        function displayPagination(pagination){
-            var paginationEl = document.getElementById('pagination'),
-            fragment = document.createDocumentFragment(), i;
-
-            // 검색 리스트 refresh
-            while(paginationEl.hasChildNodes()){
-                paginationEl.removeChild(paginationEl.lastChild);
-            }
-
-            for(i=1; i<pagination.last; i++){
-                var el = document.createElement('a');
-                el.href = "#";
-                el.innerHTML = i;
-
-                if(i === pagination.current){
-                    el.className = 'on';
-                } else{
-                    el.onclick = (function (i){
-                        return function (){
-                            pagination.gotoPage(i);
-                        }
-                    })(i);
-                }
-
-                fragment.appendChild(el);
-            }
-
-            paginationEl.appendChild(fragment);
         }
 
         // 마커 생성
@@ -161,7 +137,7 @@ function MapContainer({apiData, searchPlace}) {
                                        <div class="desc" style="position: relative;margin: 13px 0 0 90px;height: 75px;">
                                             <div class="ellipsis" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">주소)${place.address_name}</div>
                                             <div class="jibun" style="font-size: 11px;color: #888;margin-top: -2px;">지번)${place.road_address_name}</div>
-                                            <button type="button" onClick="move()" style="margin:5px 0px 0px 10px;height:25px;width:150px;">같이 먹을사람 찾기</button>
+                                            <button type="button" onClick="window.location.href='http://localhost:3000/findPeopleWith/${place.place_name}/${grade}'" style="margin:5px 0px 0px 10px;height:25px;width:150px;">같이 먹을사람 찾기</button>
                                        </div>
                                    </div>
                                </div>
@@ -182,8 +158,8 @@ function MapContainer({apiData, searchPlace}) {
             })
 
         }
-
-    }, [searchPlace, apiData]);
+        
+    }, []);
 
     return(
         <div class="body" id="body">
@@ -201,7 +177,6 @@ function MapContainer({apiData, searchPlace}) {
                         </div>
                     </div>
                 ))}
-                <div id='pagination' class="page"></div>
             </div>            
             <div id='Map' class="Map"></div>
         </div>

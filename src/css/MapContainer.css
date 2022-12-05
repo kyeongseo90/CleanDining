@@ -1,15 +1,13 @@
 .body{display:flex;}
-.Map{width: 80%;height:90vh;}
-.result{float:right;width:20%;height:90vh;display:grid;justify-content:center;padding:10px;margin-left:20px;overflow:auto;}
+.Map{width: 85%;height:85vh;}
+.result{float:right;width:20%;height:85vh;display:grid;justify-content:center;padding:10px;overflow:auto;}
 .item{display:flex;width:250px;height:130px;border-radius:5px;margin:0 0 10px 0;background-color:rgb(255,255,242);}
 .first{line-height:130px;width:25%;display:flex;justify-content:center;background-color: rgb(242, 233, 222);}
 .firstb{width:150px;text-align:left;font-size:17px;font-weight: bold;}
 .second{display:grid;width:75%;margin:10px 0 0 20px;font-size:11px;}
-.input{width:200px;height:30px;margin-right:15px;}
 .page{margin:10px auto;text-align: center;}
 .page a{display:inline-block;margin-right:10px;}
 .page .on {font-weight: bold; cursor: default;color:#777;}
-.inputForm{margin:10px 0 0 100px;}
 .bottom{display:flex;}
 
 .wrap{position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}

@@ -1,6 +1,12 @@
 .map_wrap{position:relative;width:100%;height:100vh;}
-.title{font-weight:bold;display:block;}
-.hAddr{position:absolute;left:10px;top:10px;border-radius:2px;background: #fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
-#centerAddr{display:block;margin-top:2px;font-weight:normal;}
+.fgtitle{text-align:center;font-weight:bold;display:block;width:350px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;border-radius: 20px 20px 0 0;padding-top:10px;}
+.hAddr{width:350px;position:absolute;left:10px;top:10px;border-radius:2px;background: #fff;background:rgba(255,255,255,0.8);z-index:1;border-radius:20px;}
+#centerAddr{display:block;margin:10px 0 10px 0;font-weight:normal;text-align: center;;}
 .bAddr{padding:5px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
 #map{width:100%;height:100%;position:relative;overflow:hidden;}
+.fginfo{position:absolute;left:10px;top:95px;border:none;z-index: 1;background:#fff;background:rgba(255,255,255,0.8);width:350px;height:730px;
+border-radius:20px;}
+.top{display: flex;margin:30px 10px 15px 50px;}
+.top_info{width:450px;font-size:30px;}
+.top_btn{border:none;background-color: lightgray;width:180px; border-radius: 5px;}
+.top_btn:hover{background-color: antiquewhite;}

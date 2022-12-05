@@ -1,0 +1,8 @@
+.logo{position:relative;top:30px;left:100px;width: 200px; height:50px;line-height:50px;background-color: aliceblue;}
+.top{position:relative;top:20px;display: flex;}
+.top button{position:relative;left:50px;}
+.createBtn{position:relative;left:150px;top:30px;width:250px;height:30px;}
+.bottom{position:relative;top:50px;left:50px;display: grid;}
+.id{font-size:50px;}
+.party{font-size:20px;}
+.party li {list-style:none;}

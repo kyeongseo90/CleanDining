@@ -28,30 +28,38 @@ function Login() {
     e.preventDefault();
     const emailInput = email;
     const passwordInput = password;
-    const requestURL = 'http://15.164.46.105:3000/loginVerify';
+    const requestURL = 'http://52.79.70.2:3000/loginVerify';
     const userInfo = {
       'email': emailInput,
       'password': passwordInput
     };
-    axios.post(requestURL, userInfo)
-      .catch(error => {
-        alert(error);
-        return window.location.reload()
-      })
-      .then(response => {
-        console.log(response);
-        switch (response.data) {
-          case "ERROR1":
-            alert("Clean Dining에 오신것을 환영합니다");
-            return window.location.replace("/Main");
-          case "ERROR2":
-            return alert("비밀번호를 다시 확인해주세요");
-          case "ERROR3":
-            return alert("아이디를 다시 확인해주세요");
-          default :
-            return alert("ERROR");
-        }
-      })
+    if(emailInput.length === 0){
+	return alert("아이디를 올바르게 입력하세요!");
+    }
+    else if (passwordInput.length === 0){
+    	return alert("비밀번호를 올바르게 입력하세요!");
+    }
+    else {
+ 	axios.post(requestURL, userInfo)
+	    .catch(error => {
+	    	alert(error);
+		return window.location.reload();
+	    })
+	    .then(response => {
+	    	console.log(response);
+		switch (response.data) {
+		  case "ERROR1" :
+		    alert("Clean Dining에 오신 것을 환영합니다");
+		    return window.location.replace("/Main");
+		  case "ERROR2" :
+		    return alert("비밀번호를 다시 확인해주세요");
+		  case "ERROR3" :
+		    return alert("아이디를 다시 확인해주세요");
+		  default :
+		    return alert("ERROR");
+		}
+	    })
+    }
   }
 
   function handleClick(e) {
@@ -79,7 +87,7 @@ function Login() {
         md={7}
         sx={{
           backgroundImage: 'url(./loginbg.png)',
-          backgroundRepeat: 'no-repeat',  
+          backgroundRepeat: 'no-repeat', / 
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
           backgroundSize: 'cover',

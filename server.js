@@ -1,3 +1,5 @@
+
+
 const http = require("http");
 const express = require("express");
 const path = require("path");
@@ -14,6 +16,82 @@ const mysql = require("mysql");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+
+app.post("/addParty", (req,res)=> {
+    var connection = mysql.createConnection({
+        host: "localhost",
+        user: "serverDBManager",
+        password: "0000",
+        database: "dining",
+        port: 3306
+    });
+
+    connection.connect();
+	const license = req.body.license;
+	const title = req.body.title;
+    const partydate = req.body.date;
+	const brief = req.body.briefInfo;
+    const number = req.body.gather_num;
+	const content = req.body.content;
+	const due = req.body.duedate;
+    
+    //console.log(partydate, number, license);
+    connection.query("INSERT INTO findPeople(license_id, title, date, briefInfo, gather_num, content, dueDate) values (?,?,?,?,?,?,?)", 
+	[license, title, partydate, brief, number, content, due], function(err,rows){
+        if(err) throw err;
+        else{
+            console.log("insert");
+            //res.send("success");
+        }
+    });
+})
+
+app.post("/addReview", (req,res)=> {
+    var connection = mysql.createConnection({
+        host: "localhost",
+        user: "serverDBManager",
+        password: "0000",
+        database: "dining",
+        port: 3306
+    });
+
+    connection.connect();
+	const license = req.body.license;
+	const title = req.body.title;
+    const visitdate = req.body.visitDate;
+    const grade = req.body.grade;
+	const content = req.body.content;
+    
+    //console.log(partydate, number, license);
+    connection.query("INSERT INTO review(license_id, title, date, grade, content) values (?,?,?,?,?)", 
+	[license, title, visitdate, grade, content], function(err,rows){
+        if(err) throw err;
+        else{
+            console.log("insert");
+            //res.send("success");
+        }
+    });
+})
+
+app.get("/getPartyData", (req,res)=>{
+	var connection = mysql.createConnection({
+		host : "localhost",
+		user : "serverDBManager", //mysql의 id
+		password : "0000", //mysql의 password
+		database : "dining", //사용할 데이터베이스
+		port : 3306
+	});
+	connection.connect();
+	const value = req.query.key;
+	console.log(value);
+	connection.query("SELECT * FROM findPeople WHERE license_id = ?", [value], function(err,data){
+		if(err) throw err;
+		else{
+			console.log("get");
+			res.send(data);
+		}
+	});
+})
 
 app.post("/addMember", (req,res)=> {
 	console.log("Start Add Memeber");

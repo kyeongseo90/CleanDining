@@ -32,7 +32,7 @@ export default function Signup() {
     const nameInput = name;
     const emailInput = email;
     const passwordInput = password;
-    const requestURL = 'http://15.164.46.105:3000/addMember';
+    const requestURL = 'http://52.79.70.2:3000/addMember';
     const userInfo = {
       'email': emailInput,
       'name': nameInput,

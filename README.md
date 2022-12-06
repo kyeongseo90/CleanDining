@@ -1,10 +1,21 @@
-# Getting Started with Create React App
+# CLEAN DINING
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+TEAM YCLK's 2022-2 Software Engineering Project
 
-## Available Scripts
+### :family: &nbsp;&nbsp;"이제는 깨끗한 곳에서 음식 먹자"
 
-In the project directory, you can run:
+> 이 프로젝트는 식품안전처에서 위생등급을 부여받은 식당만을 알려주는 서비스입니다.(?)ㅜ
+
+### :information_desk_person: &nbsp; About Team
+> Team YCLK
+>
+학과|이름|
+---|---|
+컴퓨터공학과|고나형
+컴퓨터공학과|유진우
+컴퓨터공학과|이상민
+컴퓨터공학과|최경서
+
 
 ### `npm start`
 
